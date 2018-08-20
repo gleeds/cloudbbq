@@ -13,14 +13,9 @@
     "eslint": "^5.3.0"
   },
   "dependencies": {
-    "adafruit-io": "^4.4.0",
-    "aws-iot-device-sdk": "^2.2.1",
-    "azure-iot-device": "^1.7.3",
-    "azure-iot-device-mqtt": "^1.7.3",
     "config": "^2.0.1",
     "mqtt": "^2.18.3",
     "noble": "^1.9.1",
-    "noble-promise": "^1.9.2",
     "xpc-connection": "sandeepmistry/node-xpc-connection#26/head"
   },
   "resolutions": {

@@ -3,40 +3,6 @@ var constHelper = require('./constHelper')
 var tempHelper = require('./tempHelper')
 var mqtt = require('mqtt')
 var config = require('config')
-// var clientFromConnectionString = require('azure-iot-device-mqtt').clientFromConnectionString
-// var Message = require('azure-iot-device').Message
-
-
-// var client = clientFromConnectionString(connectionString)
-
-// var azureClientOpen = false
-
-// client.open(((error)=>{
-//     if (!error){
-//         azureClientOpen = true
-//     }
-
-//     client.on('disconnect', function () {
-//         azureClientOpen = false
-//     })
-// }))
-// var awsIot = require('aws-iot-device-sdk')
-
-
-
-// awsDevice.on('connect', function() {
-//     console.log('aws iot connect')
-// })
-
-// awsDevice.on('error', function(error) {
-//     console.log('aws iot error', error)
-// })
-
-// awsDevice.on('message',(topic,payload)=>{
-//     console.log(`${topic}: ${payload}`)
-// } )
-
-// awsDevice.subscribe('temp_topic')
 
 var mqttConfig = config.get('adafruitio')
 
@@ -98,11 +64,6 @@ noble.on('discover',(peripheral)=>{
                                 console.log('binding command characteristic')
                                 commandCharacteristic = characteristic
                                 if (commandCharacteristic) {
-                                    
-                                    //console.log('Setting test Target Temp')
-                                    //commandCharacteristic.write(constHelper.setTargetTempKey(0,-3000,3020),false)
-                                    // console.log('sending fuwei command')
-                                    // commandCharacteristic.write(constHelper.fuweiKey(),false)
                                     console.log('sending read versions')
                                     commandCharacteristic.write(constHelper.readVersionsKey(),false)
                                     console.log('sending dianya command')
@@ -150,25 +111,6 @@ noble.on('discover',(peripheral)=>{
                                     console.log(data)
                                     console.log(isNotification)
                                 })
-
-                                // characteristic.discoverDescriptors((error,descriptors)=>{
-                                //     if (error){
-                                //         console.error(error)
-                                //     }
-                                //     else {
-                                //         descriptors.forEach((d)=>{
-                                //             console.log(`Descriptor: ${d.name} (${d.uuid})`)
-                                //             if (d.uuid === '2902'){
-                                //                 console.log('writing descriptor for ff1')
-                                //                 d.writeValue(new Buffer([0x01, 0x00]),(error)=>{
-                                //                     if (error){
-                                //                         console.error(error)
-                                //                     }
-                                //                 })
-                                //             }
-                                //         })
-                                //     }
-                                // })
                             }
                             else if (characteristic.uuid === 'fff4') {
                                 console.log('binding temp characteristic')
@@ -176,36 +118,14 @@ noble.on('discover',(peripheral)=>{
                                 console.log(tempCharacteristic.properties)
 
                                 console.log('Enable ff4 notifications')
-                                // tempCharacteristic.discoverDescriptors((error,descriptors)=>{
-                                //     if (error){
-                                //         console.error(error)
-                                //     }
-                                //     else {
-                                //         descriptors.forEach((d)=>{
-                                //             console.log(`Descriptor: ${d.name} (${d.uuid})`)
-                                //             if (d.uuid === '2902'){
-                                //                 console.log('writing descriptor')
-                                //                 d.writeValue(new Buffer([0x01, 0x00]),(error)=>{
-                                //                     if (error){
-                                //                         console.error(error)
-                                //                     }
-                                //                 })
-                                //             }
-                                //         })
-                                //     }
-                                // })
+
                                 console.log('subscribing to temp characteristic')
                                 tempCharacteristic.subscribe((error)=>{
                                     if (error) {
                                         console.error(error)
                                     }
                                 })
-                                // tempCharacteristic.notify(true,(error)=>{
-                                //     if (error){
-                                //         console.log('notify error')
-                                //         console.error(error)
-                                //     }                                       
-                                // })
+
                                 tempCharacteristic.on('data',(data,isNotification) =>{
                                     console.log('fff4 data:')
                                     if (data && data.length>0){
@@ -220,30 +140,10 @@ noble.on('discover',(peripheral)=>{
                                                 }))
                                             }
                                         }
-                                        //awsDevice.publish('temp_topic',JSON.stringify())
                                     }
                                     else {
                                         console.error('wierd empty buffer')
                                     }
-
-                                    // if (error){
-                                    //     console.error(error)
-                                    // }
-                                    // else {
-                                    //     tempCharacteristic.read((error,data) => {
-                                    //         if (error) {
-                                    //             console.error(error)
-                                    //         } 
-                                    //         else {
-                                    //             if (data) {
-                                    //                 console.log(data.toString('utf8'))
-                                    //             }
-                                    //             else {
-                                    //                 //console.log('Temp Characteristic empty')
-                                    //             }
-                                    //         }
-                                    //     })
-                                    // }
                                 })
                             }
                             else if (characteristic.uuid === '2a2c') {
