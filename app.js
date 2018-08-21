@@ -4,13 +4,15 @@ var tempHelper = require('./tempHelper')
 var mqtt = require('mqtt')
 var config = require('config')
 
-var mqttConfig = config.get('adafruitio')
+var mqttConfig = config.get('mqtt')
 
 var mqttConnected = false
 var msgCount = 0
 
-
-var client = mqtt.connect(`mqtts://${mqttConfig.username}:${mqttConfig.key}@io.adafruit.com:8883`)
+var mqttConnString = `${mqttConfig.protocol}://${mqttConfig.username}:${mqttConfig.key}@${mqttConfig.url}`
+console.log(process.env.NODE_ENV)
+console.log(mqttConnString)
+var client = mqtt.connect(mqttConnString)
 
 client.on('connect',()=>{
     mqttConnected = true

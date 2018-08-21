@@ -1,0 +1,11 @@
+{
+    "mqtt": {
+        "username" : "USERNAME",
+        "key":"API_KEY",
+        "protocol":"mqtts",
+        "url":"url.com:1234",
+        "topics":[
+            "PROBE/1/TOPIC"
+        ]
+    }
+}
