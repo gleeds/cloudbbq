@@ -10,8 +10,6 @@ var mqttConnected = false
 var msgCount = 0
 
 var mqttConnString = `${mqttConfig.protocol}://${mqttConfig.username}:${mqttConfig.key}@${mqttConfig.url}`
-console.log(process.env.NODE_ENV)
-console.log(mqttConnString)
 var client = mqtt.connect(mqttConnString)
 
 client.on('connect',()=>{
@@ -48,14 +46,12 @@ noble.on('discover',(peripheral)=>{
 
 
 function connectToIBBQ(peripheral) {
-    //peripheral.discoverSomeServicesAndCharacteristics(['fff0'],['fff2','fff4','fff5'],(error,services,characteristics)=>{
     peripheral.discoverAllServicesAndCharacteristics((error,services,characteristics)=>{
         if(error){
             console.error(error)
         }
         else{
             for (let characteristic of characteristics){
-                console.log('mapping characteristic ' + characteristic.uuid)
                 switch(characteristic.uuid){
                     case 'fff2':
                         pairCharacteristic = characteristic
@@ -75,7 +71,6 @@ function connectToIBBQ(peripheral) {
 }
 
 function pairToDevice() {
-    console.log(pairCharacteristic.uuid)
     pairCharacteristic.write(constHelper.autoPairKey(),true, (error)=>{
         if (error){
             console.error(error)
@@ -103,21 +98,33 @@ function subscribeToEvents() {
 }
 
 function handleTempEvent(data) {
-    console.log('fff4 data:')
-    if (data && data.length>0){
-        console.log(data)
-        var probe1Temp = tempHelper.cToF(data.readInt16LE(0)/10)
-        console.log(`Probe 1: ${probe1Temp}F`)
+    if (data && data.length == 12){
+        var probeTemps = []
+        for (var i = 0; i< 6; i++) {
+            var rawTemp = data.readInt16LE(i*2)
+            if (rawTemp != -10) {
+                probeTemps.push(tempHelper.cToF(rawTemp/10))
+            }
+            else {
+                probeTemps.push(null)
+            }
+            
+        }
+        console.log(`Probes 1: ${probeTemps[0]}F 2: ${probeTemps[1]}F 3: ${probeTemps[2]}F `+
+            `4: ${probeTemps[3]}F 5: ${probeTemps[4]}F 5: ${probeTemps[5]}F`)
         if (mqttConnected){
             msgCount++
-            if(msgCount%3 == 0) {
-                client.publish(mqttConfig.topics[0],JSON.stringify({
-                    value:probe1Temp
-                }))
+            for (var j = 0; j < 6; j++){
+                if(msgCount % mqttConfig.probeMessagePerPublish == 0 && probeTemps[j] != null) {
+                    client.publish(mqttConfig.topics[j],JSON.stringify({
+                        value:probeTemps[j]
+                    }))
+                }
             }
+            
         }
     }
     else {
-        console.error('wierd empty buffer')
+        console.error('wierd empty or wrong size buffer')
     }
 }

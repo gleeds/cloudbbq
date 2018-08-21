@@ -6,6 +6,7 @@
         "url":"url.com:1234",
         "topics":[
             "PROBE/1/TOPIC"
-        ]
+        ],
+        "probeMessagePerPublish":12
     }
 }
