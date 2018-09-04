@@ -7,7 +7,7 @@ This code will also likely work with other similar Bluetooth probes that show up
 
 ## Using Cloud BBQ
 * After cloning, run `npm install` or `yarn install`
-* Edit `/certs/default.json` or create a new file `/certs/development.json` with your MQTT information.
+* Edit `/config/default.json` or create a new file `/config/development.json` with your MQTT information.
 Tested with [Adafruit IO](https://io.adafruit.com)
 * Start with `npm start` or `yarn start`
 
