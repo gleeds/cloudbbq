@@ -11,6 +11,15 @@ This code will also likely work with other similar Bluetooth probes that show up
 Tested with [Adafruit IO](https://io.adafruit.com)
 * Start with `npm start` or `yarn start`
 
+### MacOS
+Xcode is required for Noble's node-gyp compilation.
+
+### Linux setup
+See the [Noble Linux setup](https://github.com/noble/noble).
+
+## Known Issues
+Cloud BBQ depends on the noble library for Bluetooth LE which in turn depends on node-xpc-connection which currently doesn't work in NodeJS 10.  Cloud BBQ makes use of a PR branch of node-xpc-connection to add NodeJS 10 support, but this branch still only seems to work on MacOS.  For linux, using NodeJS 8 appears to be the only solution for now.
+
 ## Using with Adafruit IO
 To setup to work with Adafruit IO, create a group, and then add 6 topics, then edit your default.json to look something like this:
 
