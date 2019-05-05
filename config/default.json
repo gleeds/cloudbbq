@@ -8,5 +8,11 @@
             "PROBE/1/TOPIC"
         ],
         "probeMessagePerPublish":12
+    },
+    "notifications":{
+        "googleAssistant":{
+            "enabled":false,
+            "oAuthSecretsFile":"/config/client_secret_abcd.json"
+        }
     }
 }

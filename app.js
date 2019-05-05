@@ -3,11 +3,44 @@ var constHelper = require('./constHelper')
 var tempHelper = require('./tempHelper')
 var mqtt = require('mqtt')
 var config = require('config')
+var program = require('commander')
+var path = require('path')
+var GoogleAssistant = require('google-assistant')
 
 var mqttConfig = config.get('mqtt')
+var notificationConfig = config.get('notifications')
 
 var mqttConnected = false
 var msgCount = 0
+
+program
+    .version('1.1.0')
+    .option('-p1, --probe1 <n>','Probe 1 Target Temperature(F)',parseInt)
+    .option('-p2, --probe2 <n>','Probe 2 Target Temperature(F)',parseInt)
+    .option('-p3, --probe3 <n>','Probe 3 Target Temperature(F)',parseInt)
+    .option('-p4, --probe4 <n>','Probe 4 Target Temperature(F)',parseInt)
+    .option('-p6, --probe5 <n>','Probe 5 Target Temperature(F)',parseInt)
+    .option('-p7, --probe6 <n>','Probe 6 Target Temperature(F)',parseInt)
+    .parse(process.argv)
+
+notificationConfig.targets = [
+    program.probe1,
+    program.probe2,
+    program.probe3,
+    program.probe4,
+    program.probe5,
+    program.probe6]
+notificationConfig.set = [true,true,true,true,true,true]
+
+const googleConfig = {
+    auth: {
+        keyFilePath: path.resolve(__dirname,notificationConfig.googleAssistant.oAuthSecretsFile),
+        // where you want the tokens to be saved
+        // will create the directory if not already there
+        savedTokensPath: path.resolve(__dirname, 'config/tokens.json'),
+    }
+}
+const assistant = new GoogleAssistant(googleConfig.auth)
 
 var mqttConnString = `${mqttConfig.protocol}://${mqttConfig.username}:${mqttConfig.key}@${mqttConfig.url}`
 var client = mqtt.connect(mqttConnString)
@@ -53,15 +86,15 @@ function connectToIBBQ(peripheral) {
         else{
             for (let characteristic of characteristics){
                 switch(characteristic.uuid){
-                    case 'fff2':
-                        pairCharacteristic = characteristic
-                        break
-                    case 'fff4':
-                        tempCharacteristic = characteristic
-                        break
-                    case 'fff5':
-                        commandCharacteristic = characteristic
-                        break
+                case 'fff2':
+                    pairCharacteristic = characteristic
+                    break
+                case 'fff4':
+                    tempCharacteristic = characteristic
+                    break
+                case 'fff5':
+                    commandCharacteristic = characteristic
+                    break
                 }
             }
 
@@ -120,11 +153,25 @@ function handleTempEvent(data) {
                         value:probeTemps[j]
                     }))
                 }
+            }            
+        }
+
+        if (notificationConfig.googleAssistant.enabled){
+            for (var k = 0; k < 6; k++){
+                if (notificationConfig.set[k] && notificationConfig.targets[k]) {
+                    if(probeTemps[k]>notificationConfig.targets[k]) {
+                        notificationConfig.set[k] = false
+                        sendGoogleNotification(k+1,probeTemps[k])
+                    }
+                }
             }
-            
         }
     }
     else {
         console.error('wierd empty or wrong size buffer')
     }
+}
+
+function sendGoogleNotification(probe,temp) {
+    assistant.start({'textQuery':`broadcast Probe ${probe} has reached ${temp} degrees fahrenheit.`})
 }
