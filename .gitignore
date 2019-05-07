@@ -80,3 +80,5 @@ typings/
 #configs
 config/*
 !config/default.json
+
+.vscode
