@@ -1,4 +1,4 @@
-var noble = require('noble')
+var noble = require('@abandonware/noble')
 var constHelper = require('./constHelper')
 var tempHelper = require('./tempHelper')
 var mqtt = require('mqtt')
@@ -40,7 +40,7 @@ const googleConfig = {
         savedTokensPath: path.resolve(__dirname, 'config/tokens.json'),
     }
 }
-const assistant = new GoogleAssistant(googleConfig.auth)
+const assistant = notificationConfig.googleAssistant.enabled ? new GoogleAssistant(googleConfig.auth) : null
 
 var mqttConnString = `${mqttConfig.protocol}://${mqttConfig.username}:${mqttConfig.key}@${mqttConfig.url}`
 var client = mqtt.connect(mqttConnString)
@@ -56,7 +56,7 @@ var pairCharacteristic, tempCharacteristic, commandCharacteristic
 noble.on('discover',(peripheral)=>{
 
     // Check out this sample code: https://github.com/noble/noble/issues/179
-    if (peripheral.advertisement.localName === 'iBBQ'){
+    if (peripheral.id === 'b29caddbd8614f31a04b919244934bac'){
         console.log('iBBQ Discovered')
         noble.stopScanning()
 
