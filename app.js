@@ -40,7 +40,7 @@ const googleConfig = {
         savedTokensPath: path.resolve(__dirname, 'config/tokens.json'),
     }
 }
-const assistant = new GoogleAssistant(googleConfig.auth)
+const assistant = notificationConfig.googleAssistant.enabled ? new GoogleAssistant(googleConfig.auth) : null
 
 var mqttConnString = `${mqttConfig.protocol}://${mqttConfig.username}:${mqttConfig.key}@${mqttConfig.url}`
 var client = mqtt.connect(mqttConnString)
