@@ -19,8 +19,8 @@ program
     .option('-p2, --probe2 <n>','Probe 2 Target Temperature(F)',parseInt)
     .option('-p3, --probe3 <n>','Probe 3 Target Temperature(F)',parseInt)
     .option('-p4, --probe4 <n>','Probe 4 Target Temperature(F)',parseInt)
-    .option('-p6, --probe5 <n>','Probe 5 Target Temperature(F)',parseInt)
-    .option('-p7, --probe6 <n>','Probe 6 Target Temperature(F)',parseInt)
+    .option('-p5, --probe5 <n>','Probe 5 Target Temperature(F)',parseInt)
+    .option('-p6, --probe6 <n>','Probe 6 Target Temperature(F)',parseInt)
     .parse(process.argv)
 
 notificationConfig.targets = [
