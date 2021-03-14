@@ -17,12 +17,6 @@
     "config": "^2.0.1",
     "google-assistant": "^0.5.4",
     "mqtt": "^2.18.3",
-    "noble": "^1.9.1"
-  },
-  "optionalDependencies": {
-    "xpc-connection": "sandeepmistry/node-xpc-connection#26/head"
-  },
-  "resolutions": {
-    "xpc-connection": "sandeepmistry/node-xpc-connection#26/head"
+    "@abandonware/noble":"1.9.2-11"
   }
 }

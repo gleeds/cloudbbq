@@ -14,6 +14,8 @@ Tested with [Adafruit IO](https://io.adafruit.com)
 ### MacOS
 Xcode is required for Noble's node-gyp compilation.
 
+Noble library fails to install in most recent versions of node on Mac.  Use NVM and try using Node 10.
+
 ### Linux setup
 See the [Noble Linux setup](https://github.com/noble/noble).
 

@@ -1,4 +1,4 @@
-var noble = require('noble')
+var noble = require('@abandonware/noble')
 var constHelper = require('./constHelper')
 var tempHelper = require('./tempHelper')
 var mqtt = require('mqtt')
@@ -56,7 +56,10 @@ var pairCharacteristic, tempCharacteristic, commandCharacteristic
 noble.on('discover',(peripheral)=>{
 
     // Check out this sample code: https://github.com/noble/noble/issues/179
-    if (peripheral.advertisement.localName === 'iBBQ'){
+    //console.log(peripheral)
+    if (peripheral.advertisement.localName === 'iBBQ' ||
+        (peripheral.advertisement.serviceUuids && 
+            peripheral.advertisement.serviceUuids.includes('fff0'))){
         console.log('iBBQ Discovered')
         noble.stopScanning()
 
