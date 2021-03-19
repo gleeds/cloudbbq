@@ -5,6 +5,12 @@ This code should run on MacOS or Linux.   Ideally you could run this on a Raspbe
 
 This code will also likely work with other similar Bluetooth probes that show up with the bluetooth device name "iBBQ", but may require a different pairing key.  See `autoPairKey` in `constHelper.js`.
 
+## Known Working Devices
+Cloud BBQ is known to work on the following devices:
+* [Tenergy Solis Digital Meat Thermometer](https://www.amazon.com/Tenergy-Thermometer-Controlled-Bluetooth-Stainless/dp/B077821Z4C)
+* [Inkbird IBT-4XS](https://www.amazon.com/Inkbird-Wireless-Thermometer-Grilling-Rechargeable/dp/B076QDC5VL) Thanks @thebdizzle
+
+Feel free to open a ticket or PR to add other tested devices to this list.
 ## Using Cloud BBQ
 * After cloning, run `npm install` or `yarn install`
 * Edit `/config/default.json` or create a new file `/config/development.json` with your MQTT information.
