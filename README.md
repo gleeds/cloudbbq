@@ -20,7 +20,19 @@ Noble library fails to install in most recent versions of node on Mac.  Use NVM 
 See the [Noble Linux setup](https://github.com/noble/noble).
 
 ## Known Issues
-Cloud BBQ depends on the noble library for Bluetooth LE which in turn depends on node-xpc-connection which currently doesn't work in NodeJS 10.  Cloud BBQ makes use of a PR branch of node-xpc-connection to add NodeJS 10 support, but this branch still only seems to work on MacOS.  For linux, using NodeJS 8 appears to be the only solution for now.
+~~Cloud BBQ depends on the noble library for Bluetooth LE which in turn depends on node-xpc-connection which currently doesn't work in NodeJS 10.  Cloud BBQ makes use of a PR branch of node-xpc-connection to add NodeJS 10 support, but this branch still only seems to work on MacOS.  For linux, using NodeJS 8 appears to be the only solution for now.~~
+
+Noble has been abandoned by it's maintainer and a fork has been taken up by the community at https://github.com/abandonware/noble . Cloud BBQ has switched over to this library, but so far it's only tested on MacOS.  It works with NodeJS 10 fine but not Node 15.  It will be retest on Linux soon.
+
+## Device Configuration
+Cloud BBQ defaults to expecting a 6 probe device.  If your device has less probes, adjust the number in
+your `default.json`:
+
+```json
+"device": {
+        "probes":6
+},
+```
 
 ## Using with Adafruit IO
 To setup to work with Adafruit IO, create a group, and then add 6 topics, then edit your default.json to look something like this:
@@ -65,3 +77,8 @@ Cloud BBQ can be configured to send a notification to Google Home devices using 
 3. You will be given a code to copy from your browser and past into your terminal.
 4. Subsequent launches should not require steps 2-3.  When a probe crosses the set threshold, you should get a broadcast on every Google Home device in your house.
 5. Probes will only broadcast once each, even if they later fall below the set threshold.  Restarting Cloud BBQ will reset this.
+
+## Protips
+* If you don't want to overwrite the values in `default.json` or risk commiting your info back to
+your git repository, you can just create a file named `/config/development.json` and override any
+info you might need to.  It will be .gitignored automatically.

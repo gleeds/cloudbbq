@@ -1,4 +1,7 @@
 {
+    "device": {
+        "probes":6
+    },
     "mqtt": {
         "username" : "USERNAME",
         "key":"API_KEY",

@@ -9,10 +9,12 @@ var GoogleAssistant = require('google-assistant')
 
 var mqttConfig = config.get('mqtt')
 var notificationConfig = config.get('notifications')
+var deviceConfig = config.get('device')
 
 var mqttConnected = false
 var msgCount = 0
 
+//TODO: build this dynamically based of probe count
 program
     .version('1.1.0')
     .option('-p1, --probe1 <n>','Probe 1 Target Temperature(F)',parseInt)
@@ -56,7 +58,6 @@ var pairCharacteristic, tempCharacteristic, commandCharacteristic
 noble.on('discover',(peripheral)=>{
 
     // Check out this sample code: https://github.com/noble/noble/issues/179
-    //console.log(peripheral)
     if (peripheral.advertisement.localName === 'iBBQ' ||
         (peripheral.advertisement.serviceUuids && 
             peripheral.advertisement.serviceUuids.includes('fff0'))){
@@ -134,9 +135,10 @@ function subscribeToEvents() {
 }
 
 function handleTempEvent(data) {
-    if (data && data.length == 12){
+    if (data && data.length == (deviceConfig.probes*2)){
         var probeTemps = []
-        for (var i = 0; i< 6; i++) {
+        var logMsg = 'Probes '
+        for (var i = 0; i< deviceConfig.probes; i++) {
             var rawTemp = data.readInt16LE(i*2)
             if (rawTemp != -10) {
                 probeTemps.push(tempHelper.cToF(rawTemp/10))
@@ -144,13 +146,15 @@ function handleTempEvent(data) {
             else {
                 probeTemps.push(null)
             }
+            logMsg+=`${i+1}: ${probeTemps[i]||'--'}F `
             
         }
-        console.log(`Probes 1: ${probeTemps[0]}F 2: ${probeTemps[1]}F 3: ${probeTemps[2]}F `+
-            `4: ${probeTemps[3]}F 5: ${probeTemps[4]}F 5: ${probeTemps[5]}F`)
+
+        console.log(logMsg)
+
         if (mqttConnected){
             msgCount++
-            for (var j = 0; j < 6; j++){
+            for (var j = 0; j < deviceConfig.probes; j++){
                 if(msgCount % mqttConfig.probeMessagePerPublish == 0 && probeTemps[j] != null) {
                     client.publish(mqttConfig.topics[j],JSON.stringify({
                         value:probeTemps[j]
@@ -160,7 +164,7 @@ function handleTempEvent(data) {
         }
 
         if (notificationConfig.googleAssistant.enabled){
-            for (var k = 0; k < 6; k++){
+            for (var k = 0; k < deviceConfig.probes; k++){
                 if (notificationConfig.set[k] && notificationConfig.targets[k]) {
                     if(probeTemps[k]>notificationConfig.targets[k]) {
                         notificationConfig.set[k] = false
@@ -170,8 +174,11 @@ function handleTempEvent(data) {
             }
         }
     }
+    else if (!data){
+        console.error('Probe data empty')
+    }
     else {
-        console.error('wierd empty or wrong size buffer')
+        console.error(`Probe data length ${data.length} but expected ${deviceConfig.probes*2} for a ${deviceConfig.probes} probe device. Check your device config json.`)
     }
 }
 
