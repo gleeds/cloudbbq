@@ -129,8 +129,12 @@ function subscribeToEvents() {
     tempCharacteristic.on('data',(data) => handleTempEvent(data))
 
     if (localizationConfig.units === 'F') {
-        console.log('setting units')
+        console.log('setting units to F')
         commandCharacteristic.write(constHelper.setUnitsFKey(),false)
+    }
+    else {
+        console.log('setting units to C')
+        commandCharacteristic.write(constHelper.setUnitsCKey(),false)
     }
     console.log('sending start temp events')
     commandCharacteristic.write(constHelper.startTempUpdates(),false)
