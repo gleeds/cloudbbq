@@ -18,5 +18,8 @@
     "config": "^2.0.1",
     "google-assistant": "^0.5.4",
     "mqtt": "^2.18.3"
+  },
+  "resolutions": {
+    "node-forge": "0.10.0"
   }
 }
