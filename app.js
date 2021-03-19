@@ -10,6 +10,7 @@ var GoogleAssistant = require('google-assistant')
 var mqttConfig = config.get('mqtt')
 var notificationConfig = config.get('notifications')
 var deviceConfig = config.get('device')
+var localizationConfig = config.get('localization')
 
 var mqttConnected = false
 var msgCount = 0
@@ -127,8 +128,10 @@ function subscribeToEvents() {
     })
     tempCharacteristic.on('data',(data) => handleTempEvent(data))
 
-    console.log('setting units')
-    commandCharacteristic.write(constHelper.setUnitsFKey(),false)
+    if (localizationConfig.units === 'F') {
+        console.log('setting units')
+        commandCharacteristic.write(constHelper.setUnitsFKey(),false)
+    }
     console.log('sending start temp events')
     commandCharacteristic.write(constHelper.startTempUpdates(),false)
 
@@ -141,12 +144,18 @@ function handleTempEvent(data) {
         for (var i = 0; i< deviceConfig.probes; i++) {
             var rawTemp = data.readInt16LE(i*2)
             if (rawTemp != -10) {
-                probeTemps.push(tempHelper.cToF(rawTemp/10))
+                if (localizationConfig.units === 'F') {
+                    probeTemps.push(tempHelper.cToF(rawTemp/10))
+                }
+                else {
+                    probeTemps.push(rawTemp/10)
+                }
+                
             }
             else {
                 probeTemps.push(null)
             }
-            logMsg+=`${i+1}: ${probeTemps[i]||'--'}F `
+            logMsg+=`${i+1}: ${probeTemps[i]||'--'}${localizationConfig.units} `
             
         }
 
@@ -183,5 +192,5 @@ function handleTempEvent(data) {
 }
 
 function sendGoogleNotification(probe,temp) {
-    assistant.start({'textQuery':`broadcast Probe ${probe} has reached ${temp} degrees fahrenheit.`})
+    assistant.start({'textQuery':`broadcast Probe ${probe} has reached ${temp} degrees ${localizationConfig.units === 'F' ? 'fahrenheit':'celsius'}.`})
 }

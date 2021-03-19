@@ -2,6 +2,9 @@
     "device": {
         "probes":6
     },
+    "localization":{
+        "units":"F"
+    },
     "mqtt": {
         "username" : "USERNAME",
         "key":"API_KEY",

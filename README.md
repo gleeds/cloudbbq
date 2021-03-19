@@ -30,10 +30,17 @@ your `default.json`:
 
 ```json
 "device": {
-        "probes":6
+    "probes":6
 },
 ```
 
+## Localization
+Set your favored temperature unit to either `F` or `C` in your `default.json`:
+```json
+"localization":{
+    "units":"F"
+},
+```
 ## Using with Adafruit IO
 To setup to work with Adafruit IO, create a group, and then add 6 topics, then edit your default.json to look something like this:
 
