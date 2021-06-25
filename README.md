@@ -9,6 +9,7 @@ This code will also likely work with other similar Bluetooth probes that show up
 Cloud BBQ is known to work on the following devices:
 * [Tenergy Solis Digital Meat Thermometer](https://www.amazon.com/Tenergy-Thermometer-Controlled-Bluetooth-Stainless/dp/B077821Z4C)
 * [Inkbird IBT-4XS](https://www.amazon.com/Inkbird-Wireless-Thermometer-Grilling-Rechargeable/dp/B076QDC5VL) Thanks @thebdizzle
+* [Inkbird IBT-4XC](https://www.amazon.com/Inkbird-Waterproof-Bluetooth-Thermometer-Rechargeable/dp/B07WXQWD3Y) Thanks @SavageCore
 
 Feel free to open a ticket or PR to add other tested devices to this list.
 ## Using Cloud BBQ
