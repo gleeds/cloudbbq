@@ -27,9 +27,7 @@ Noble library fails to install in most recent versions of node on Mac.  Use NVM 
 See the [Noble Linux setup](https://github.com/noble/noble).
 
 ## Known Issues
-~~Cloud BBQ depends on the noble library for Bluetooth LE which in turn depends on node-xpc-connection which currently doesn't work in NodeJS 10.  Cloud BBQ makes use of a PR branch of node-xpc-connection to add NodeJS 10 support, but this branch still only seems to work on MacOS.  For linux, using NodeJS 8 appears to be the only solution for now.~~
-
-Noble has been abandoned by it's maintainer and a fork has been taken up by the community at [@abandonware/noble](https://github.com/abandonware/noble). Cloud BBQ has switched over to this library, but so far it's only tested on MacOS.  It works with NodeJS 10 fine but not Node 15.  It will be retest on Linux soon.
+Noble has been abandoned by it's maintainer and a fork has been taken up by the community at [@abandonware/noble](https://github.com/abandonware/noble). Cloud BBQ has switched over to this library and it has been tested on NodeJS 10 and 8, at this point 10 is recommended.   Newer versions of NodeJS are not currently compatible.
 
 ## Device Configuration
 Cloud BBQ defaults to expecting a 6 probe device.  If your device has less probes, adjust the number in
