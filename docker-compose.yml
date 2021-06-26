@@ -1,0 +1,8 @@
+version: '3'
+services:
+  cloudbbq:
+    image: gleeds/cloudbbq:latest
+    network_mode: host
+    volumes:
+      - ./default.json:/cloudbbq/config/default.json
+    restart: unless-stopped
