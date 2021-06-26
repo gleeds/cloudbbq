@@ -3,7 +3,7 @@ var constHelper = require('./constHelper')
 var tempHelper = require('./tempHelper')
 var mqtt = require('mqtt')
 var config = require('config')
-var program = require('commander')
+var { Command } = require('commander');
 var path = require('path')
 var GoogleAssistant = require('google-assistant')
 
@@ -15,16 +15,13 @@ var localizationConfig = config.get('localization')
 var mqttConnected = false
 var msgCount = 0
 
-//TODO: build this dynamically based of probe count
-program
-    .version('1.1.0')
-    .option('-p1, --probe1 <n>','Probe 1 Target Temperature(F)',parseInt)
-    .option('-p2, --probe2 <n>','Probe 2 Target Temperature(F)',parseInt)
-    .option('-p3, --probe3 <n>','Probe 3 Target Temperature(F)',parseInt)
-    .option('-p4, --probe4 <n>','Probe 4 Target Temperature(F)',parseInt)
-    .option('-p5, --probe5 <n>','Probe 5 Target Temperature(F)',parseInt)
-    .option('-p6, --probe6 <n>','Probe 6 Target Temperature(F)',parseInt)
-    .parse(process.argv)
+var program = new Command();
+program.version('1.1.0')
+
+for (var i = 1; i < ++deviceConfig.probes; i++) {
+    program.option(`-p${i}, --probe${i} <n>`, `Probe ${i} Target Temperature(${localizationConfig.units})`, parseInt)
+}
+program.parse(process.argv)
 
 notificationConfig.targets = [
     program.probe1,
