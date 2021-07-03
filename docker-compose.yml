@@ -3,6 +3,12 @@ services:
   cloudbbq:
     image: gleeds/cloudbbq:latest
     network_mode: host
-    volumes:
-      - ./default.json:/cloudbbq/config/default.json
     restart: unless-stopped
+    environment: 
+      PROBES: 6
+      UNITS: 'F'
+      USERNAME: 'username'
+      MQTT_API_KEY: 'key'
+      MQTT_URL: 'io.adafruit.com:8883'
+      MESSAGES_PER_PUBLISH: 12
+      MQTT_TOPICS: '["PROBE/1/TOPIC","PROBE/2/TOPIC","PROBE/3/TOPIC","PROBE/4/TOPIC",'PROBE/5/TOPIC','PROBE/6/TOPIC']'

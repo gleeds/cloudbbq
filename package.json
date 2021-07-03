@@ -15,7 +15,7 @@
   "dependencies": {
     "@abandonware/noble": "1.9.2-11",
     "commander": "^2.20.0",
-    "config": "^2.0.1",
+    "config": "^3.3.6",
     "google-assistant": "^0.5.4",
     "mqtt": "^2.18.3"
   },
