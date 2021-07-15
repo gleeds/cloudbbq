@@ -1,0 +1,19 @@
+{
+    "device": {
+        "probes":"PROBES"
+    },
+    "localization":{
+        "units":"UNITS"
+    },
+    "mqtt": {
+        "username" : "USERNAME",
+        "key":"MQTT_API_KEY",
+        "protocol":"PROTOCOL",
+        "url":"MQTT_URL",
+        "topics":{
+            "__name":"MQTT_TOPICS",
+            "__format": "json"
+        },
+        "probeMessagePerPublish":"MESSAGES_PER_PUBLISH"
+    }
+}
