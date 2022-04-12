@@ -26,12 +26,12 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    # - name: Add msbuild to PATH
-    #   if: matrix.os == 'windows-latest'
-    #   uses: microsoft/setup-msbuild@v1.0.0
-    - name: Set Windows environment
+    - name: Add msbuild to PATH
       if: matrix.os == 'windows-latest'
-      run: |
-        echo 'GYP_MSVS_VERSION=2015' >> $Env:GITHUB_ENV
-        echo 'GYP_MSVS_OVERRIDE_PATH=C:\\Dummy' >> $Env:GITHUB_ENV
+      uses: microsoft/setup-msbuild@v1.1
+    # - name: Set Windows environment
+    #   if: matrix.os == 'windows-latest'
+    #   run: |
+    #     echo 'GYP_MSVS_VERSION=2015' >> $Env:GITHUB_ENV
+    #     echo 'GYP_MSVS_OVERRIDE_PATH=C:\\Dummy' >> $Env:GITHUB_ENV
     - run: yarn
