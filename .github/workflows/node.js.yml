@@ -29,6 +29,9 @@ jobs:
     - name: Add msbuild to PATH
       if: matrix.os == 'windows-latest'
       uses: microsoft/setup-msbuild@v1.1
+    - name: install global npm libraries
+      if: matrix.os == 'windows-latest'
+      run: npm install --global --production windows-build-tools
     # - name: Set Windows environment
     #   if: matrix.os == 'windows-latest'
     #   run: |
